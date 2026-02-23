@@ -246,6 +246,7 @@ function ContactForm({ isInView, isRu }: { isInView: boolean; isRu: boolean }) {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [formKey, setFormKey] = useState(0);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -272,6 +273,7 @@ function ContactForm({ isInView, isRu }: { isInView: boolean; isRu: boolean }) {
 
       setSubmitted(true);
       setFormData({ name: "", email: "", message: "" });
+      setFormKey((k) => k + 1);
       setTimeout(() => setSubmitted(false), 4000);
     } catch {
       setError(true);
@@ -289,33 +291,35 @@ function ContactForm({ isInView, isRu }: { isInView: boolean; isRu: boolean }) {
       transition={{ duration: 0.8, delay: 0.2 }}
       className="flex flex-col gap-8"
     >
-      <div className="grid gap-8 sm:grid-cols-2">
-        <FloatingField
-          label={isRu ? "\u0418\u043c\u044f" : "Name"}
-          value={formData.name}
-          onChange={(val) => setFormData({ ...formData, name: val })}
-          index={0}
-          isInView={isInView}
-        />
-        <FloatingField
-          label="Email"
-          type="email"
-          value={formData.email}
-          onChange={(val) => setFormData({ ...formData, email: val })}
-          index={1}
+      <div key={formKey} className="flex flex-col gap-8">
+        <div className="grid gap-8 sm:grid-cols-2">
+          <FloatingField
+            label={isRu ? "\u0418\u043c\u044f" : "Name"}
+            value={formData.name}
+            onChange={(val) => setFormData({ ...formData, name: val })}
+            index={0}
+            isInView={isInView}
+          />
+          <FloatingField
+            label="Email"
+            type="email"
+            value={formData.email}
+            onChange={(val) => setFormData({ ...formData, email: val })}
+            index={1}
+            isInView={isInView}
+          />
+        </div>
+        <FloatingTextarea
+          label={
+            isRu
+              ? "\u0420\u0430\u0441\u0441\u043a\u0430\u0436\u0438\u0442\u0435 \u043e \u043f\u0440\u043e\u0435\u043a\u0442\u0435..."
+              : "Tell us about your project..."
+          }
+          value={formData.message}
+          onChange={(val) => setFormData({ ...formData, message: val })}
           isInView={isInView}
         />
       </div>
-      <FloatingTextarea
-        label={
-          isRu
-            ? "\u0420\u0430\u0441\u0441\u043a\u0430\u0436\u0438\u0442\u0435 \u043e \u043f\u0440\u043e\u0435\u043a\u0442\u0435..."
-            : "Tell us about your project..."
-        }
-        value={formData.message}
-        onChange={(val) => setFormData({ ...formData, message: val })}
-        isInView={isInView}
-      />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -327,7 +331,13 @@ function ContactForm({ isInView, isRu }: { isInView: boolean; isRu: boolean }) {
           disabled={loading}
           whileHover={{ scale: loading ? 1 : 1.02 }}
           whileTap={{ scale: loading ? 1 : 0.98 }}
-          className="group inline-flex items-center gap-3 rounded-full border border-white bg-white px-8 py-3.5 text-sm font-semibold text-black transition-all duration-300 hover:bg-neutral-200 disabled:opacity-70 disabled:cursor-not-allowed"
+          className={`group inline-flex items-center gap-3 rounded-full border px-8 py-3.5 text-sm font-semibold transition-all duration-300 disabled:cursor-not-allowed ${
+            submitted
+              ? "border-emerald-400 bg-emerald-400 text-black"
+              : error
+                ? "border-red-400 bg-red-400 text-black"
+                : "border-white bg-white text-black hover:bg-neutral-200 disabled:opacity-70"
+          }`}
         >
           <AnimatePresence mode="wait">
             {submitted ? (
