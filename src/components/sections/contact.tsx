@@ -7,24 +7,18 @@ import {
   useTransform,
   useMotionValue,
   useSpring,
+  AnimatePresence,
 } from "framer-motion";
 import { useRef, useState, type FormEvent } from "react";
-import { ArrowUpRight, Send } from "lucide-react";
+import { Send } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { LocaleTransition } from "@/components/locale-transition";
 import { Logo } from "@/components/logo";
-
-const socials = [
-  { name: "Telegram", href: "https://t.me/aidamirrrrrr" },
-  { name: "GitHub", href: "https://github.com/not-found-studio" },
-  { name: "WhatsApp", href: "https://wa.me/79889999999" },
-];
 
 const footerLinks = [
   { labelRu: "О нас", labelEn: "About", href: "#about" },
   { labelRu: "Услуги", labelEn: "Services", href: "#services" },
   { labelRu: "Работы", labelEn: "Work", href: "#projects" },
-  { labelRu: "Блог", labelEn: "Blog", href: "#blog" },
 ];
 
 /* ── Magnetic link component ── */
@@ -65,6 +59,183 @@ function MagneticLink({
   );
 }
 
+/* ── Floating input field ── */
+function FloatingField({
+  label,
+  type = "text",
+  required = true,
+  value,
+  onChange,
+  index,
+  isInView,
+}: {
+  label: string;
+  type?: string;
+  required?: boolean;
+  value: string;
+  onChange: (val: string) => void;
+  index: number;
+  isInView: boolean;
+}) {
+  const [focused, setFocused] = useState(false);
+  const [touched, setTouched] = useState(false);
+  const isActive = focused || value.length > 0;
+  const isEmpty = touched && required && value.trim().length === 0;
+  const isInvalidEmail =
+    touched &&
+    type === "email" &&
+    value.length > 0 &&
+    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: 0.2 + index * 0.08 }}
+      className="group relative"
+    >
+      <input
+        type={type}
+        required={required}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => {
+          setFocused(false);
+          setTouched(true);
+        }}
+        className={`peer w-full border-b-2 bg-transparent pb-2 pt-6 text-sm text-black outline-none transition-all duration-300 ${
+          isEmpty || isInvalidEmail
+            ? "border-red-400"
+            : focused
+              ? "border-black"
+              : "border-neutral-200 hover:border-neutral-400"
+        }`}
+      />
+      <span
+        className={`pointer-events-none absolute left-0 transition-all duration-300 ${
+          isActive ? "top-0 text-[11px] tracking-wider" : "top-5 text-sm"
+        } ${
+          isEmpty || isInvalidEmail
+            ? "text-red-400"
+            : focused
+              ? "text-black"
+              : "text-neutral-400"
+        }`}
+      >
+        {label}
+      </span>
+      {/* Animated underline */}
+      <motion.span
+        className="absolute bottom-0 left-0 h-0.5 bg-black"
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: focused ? 1 : 0 }}
+        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        style={{ originX: 0 }}
+      />
+      {/* Error messages */}
+      <AnimatePresence>
+        {isEmpty && (
+          <motion.span
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            className="absolute -bottom-5 left-0 text-[11px] text-red-400"
+          >
+            {type === "email" ? "Email required" : "Required"}
+          </motion.span>
+        )}
+        {isInvalidEmail && (
+          <motion.span
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            className="absolute -bottom-5 left-0 text-[11px] text-red-400"
+          >
+            Invalid email
+          </motion.span>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
+/* ── Floating textarea field ── */
+function FloatingTextarea({
+  label,
+  required = true,
+  value,
+  onChange,
+  isInView,
+}: {
+  label: string;
+  required?: boolean;
+  value: string;
+  onChange: (val: string) => void;
+  isInView: boolean;
+}) {
+  const [focused, setFocused] = useState(false);
+  const [touched, setTouched] = useState(false);
+  const isActive = focused || value.length > 0;
+  const isEmpty = touched && required && value.trim().length === 0;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: 0.36 }}
+      className="group relative"
+    >
+      <textarea
+        required={required}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        onFocus={() => setFocused(true)}
+        onBlur={() => {
+          setFocused(false);
+          setTouched(true);
+        }}
+        rows={4}
+        className={`peer w-full resize-none border-b-2 bg-transparent pb-2 pt-6 text-sm text-black outline-none transition-all duration-300 ${
+          isEmpty
+            ? "border-red-400"
+            : focused
+              ? "border-black"
+              : "border-neutral-200 hover:border-neutral-400"
+        }`}
+      />
+      <span
+        className={`pointer-events-none absolute left-0 transition-all duration-300 ${
+          isActive ? "top-0 text-[11px] tracking-wider" : "top-5 text-sm"
+        } ${
+          isEmpty ? "text-red-400" : focused ? "text-black" : "text-neutral-400"
+        }`}
+      >
+        {label}
+      </span>
+      <motion.span
+        className="absolute bottom-0 left-0 h-0.5 bg-black"
+        initial={{ scaleX: 0 }}
+        animate={{ scaleX: focused ? 1 : 0 }}
+        transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        style={{ originX: 0 }}
+      />
+      <AnimatePresence>
+        {isEmpty && (
+          <motion.span
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -4 }}
+            className="absolute -bottom-5 left-0 text-[11px] text-red-400"
+          >
+            Required
+          </motion.span>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
 /* ── Contact form ── */
 function ContactForm({ isInView, isRu }: { isInView: boolean; isRu: boolean }) {
   const [formData, setFormData] = useState({
@@ -76,6 +247,15 @@ function ContactForm({ isInView, isRu }: { isInView: boolean; isRu: boolean }) {
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
+    // Basic validation
+    if (
+      !formData.name.trim() ||
+      !formData.email.trim() ||
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) ||
+      !formData.message.trim()
+    ) {
+      return;
+    }
     setSubmitted(true);
     setTimeout(() => setSubmitted(false), 3000);
     setFormData({ name: "", email: "", message: "" });
@@ -84,68 +264,79 @@ function ContactForm({ isInView, isRu }: { isInView: boolean; isRu: boolean }) {
   return (
     <motion.form
       onSubmit={handleSubmit}
-      initial={{ opacity: 0, y: 30 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.8, delay: 0.25 }}
-      className="flex flex-col gap-6"
+      initial={{ opacity: 0 }}
+      animate={isInView ? { opacity: 1 } : {}}
+      transition={{ duration: 0.8, delay: 0.2 }}
+      className="flex flex-col gap-8"
     >
-      <div className="grid gap-5 sm:grid-cols-2">
-        <div className="group relative">
-          <input
-            type="text"
-            required
-            value={formData.name}
-            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-            placeholder={isRu ? "Имя" : "Name"}
-            className="peer w-full border-b-2 border-neutral-300 bg-transparent py-3 text-sm text-black outline-none transition-colors placeholder:text-neutral-400 focus:border-black"
-          />
-        </div>
-        <div className="group relative">
-          <input
-            type="email"
-            required
-            value={formData.email}
-            onChange={(e) =>
-              setFormData({ ...formData, email: e.target.value })
-            }
-            placeholder={isRu ? "Email" : "Email"}
-            className="peer w-full border-b-2 border-neutral-300 bg-transparent py-3 text-sm text-black outline-none transition-colors placeholder:text-neutral-400 focus:border-black"
-          />
-        </div>
-      </div>
-      <div className="group relative">
-        <textarea
-          required
-          value={formData.message}
-          onChange={(e) =>
-            setFormData({ ...formData, message: e.target.value })
-          }
-          placeholder={
-            isRu ? "Расскажите о проекте..." : "Tell us about your project..."
-          }
-          rows={4}
-          className="peer w-full resize-none border-b-2 border-neutral-300 bg-transparent py-3 text-sm text-black outline-none transition-colors placeholder:text-neutral-400 focus:border-black"
+      <div className="grid gap-8 sm:grid-cols-2">
+        <FloatingField
+          label={isRu ? "\u0418\u043c\u044f" : "Name"}
+          value={formData.name}
+          onChange={(val) => setFormData({ ...formData, name: val })}
+          index={0}
+          isInView={isInView}
+        />
+        <FloatingField
+          label="Email"
+          type="email"
+          value={formData.email}
+          onChange={(val) => setFormData({ ...formData, email: val })}
+          index={1}
+          isInView={isInView}
         />
       </div>
-      <div className="pt-2">
+      <FloatingTextarea
+        label={
+          isRu
+            ? "\u0420\u0430\u0441\u0441\u043a\u0430\u0436\u0438\u0442\u0435 \u043e \u043f\u0440\u043e\u0435\u043a\u0442\u0435..."
+            : "Tell us about your project..."
+        }
+        value={formData.message}
+        onChange={(val) => setFormData({ ...formData, message: val })}
+        isInView={isInView}
+      />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.6, delay: 0.44 }}
+        className="pt-2"
+      >
         <motion.button
           type="submit"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           className="group inline-flex items-center gap-3 rounded-full border border-black bg-black px-8 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-neutral-800"
         >
-          {submitted
-            ? isRu
-              ? "Отправлено ✓"
-              : "Sent ✓"
-            : isRu
-              ? "Отправить"
-              : "Send message"}
-          {!submitted && (
-            <Send className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          )}
+          <AnimatePresence mode="wait">
+            {submitted ? (
+              <motion.span
+                key="sent"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+              >
+                {isRu
+                  ? "\u041e\u0442\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u043e \u2713"
+                  : "Sent \u2713"}
+              </motion.span>
+            ) : (
+              <motion.span
+                key="send"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="inline-flex items-center gap-3"
+              >
+                {isRu
+                  ? "\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c"
+                  : "Send message"}
+                <Send className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </motion.span>
+            )}
+          </AnimatePresence>
         </motion.button>
-      </div>
+      </motion.div>
     </motion.form>
   );
 }
@@ -214,10 +405,10 @@ export function Contact() {
           </motion.div>
         </div>
 
-        {/* Two-column: form + info */}
-        <div className="grid gap-16 lg:grid-cols-5 lg:gap-20">
-          {/* Left: email + form (3 cols) */}
-          <div className="lg:col-span-3">
+        {/* Form section */}
+        <div className="mx-auto max-w-3xl">
+          {/* Email — big magnetic link */}
+          <div className="lg:col-span-full">
             {/* Email — big magnetic link */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -248,45 +439,6 @@ export function Contact() {
             {/* Contact form */}
             <ContactForm isInView={isInView} isRu={isRu} />
           </div>
-
-          {/* Right: socials + location (2 cols) */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="flex flex-col gap-12 lg:col-span-2"
-          >
-            {/* Social links */}
-            <div>
-              <span className="mb-6 block font-mono text-xs uppercase tracking-widest text-neutral-400">
-                Social
-              </span>
-              <div className="flex flex-col">
-                {socials.map((social, i) => (
-                  <motion.div
-                    key={social.name}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={isInView ? { opacity: 1, x: 0 } : {}}
-                    transition={{
-                      duration: 0.5,
-                      delay: 0.4 + i * 0.08,
-                      ease: [0.16, 1, 0.3, 1],
-                    }}
-                  >
-                    <a
-                      href={social.href}
-                      className="group flex items-center justify-between border-b border-neutral-200 py-4 transition-colors hover:border-black"
-                    >
-                      <span className="text-base font-medium text-neutral-700 transition-colors group-hover:text-black">
-                        {social.name}
-                      </span>
-                      <ArrowUpRight className="h-4 w-4 text-neutral-300 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-black" />
-                    </a>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
         </div>
       </div>
     </section>

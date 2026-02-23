@@ -146,6 +146,11 @@
   color: #ffffff;
 }
 
+[data-nav-theme="dark"] ::selection {
+  background: #ffffff;
+  color: #0a0a0a;
+}
+
 /* Hide system cursor — desktop only */
 @media (pointer: fine) {
   html,

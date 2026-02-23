@@ -199,25 +199,32 @@ export function Projects() {
 
   const projects: Project[] = [
     {
-      title: "Club Events",
-      category: t.projects.p1cat,
-      year: "2025",
-      description: t.projects.p1desc,
-      tags: ["Next.js", "Drizzle", "PostgreSQL", "Telegram"],
-    },
-    {
       title: "NeonVPN",
-      category: t.projects.p2cat,
+      category: t.projects.p1cat,
       year: "2026",
-      description: t.projects.p2desc,
+      description: t.projects.p1desc,
       tags: ["Grammy", "NestJS", "Remnawave"],
     },
     {
-      title: "TelePost",
+      title: "Club Events",
+      category: t.projects.p2cat,
+      year: "2025",
+      description: t.projects.p2desc,
+      tags: ["Next.js", "Drizzle", "PostgreSQL", "Telegram"],
+    },
+    {
+      title: "Syndicate",
       category: t.projects.p3cat,
       year: "2025",
       description: t.projects.p3desc,
       tags: ["React", "NestJS", "Grammy", "PostgreSQL"],
+    },
+    {
+      title: "FlowAi",
+      category: t.projects.p4cat,
+      year: "2024",
+      description: t.projects.p4desc,
+      tags: ["Next.js", "Redux Toolkit", "WebSocket", "FSD"],
     },
   ];
 

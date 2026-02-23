@@ -61,15 +61,18 @@ const dictionaries = {
       title: "Наши",
       titleAccent: "проекты",
       cta: "Начать проект",
-      p1cat: "Telegram Mini App",
+      p1cat: "VPN-сервис",
       p1desc:
-        "TMA-платформа для организации мероприятий: создание событий, регистрация участников, профили и статистика. Next.js, Drizzle, PostgreSQL.",
-      p2cat: "VPN-сервис",
-      p2desc:
         "Telegram-бот для продажи VPN-подписок с оплатой через ЮKassa и Telegram Stars, лендинг и личный кабинет.",
+      p2cat: "Telegram Mini App",
+      p2desc:
+        "TMA-платформа для организации мероприятий: создание событий, регистрация участников, профили и статистика. Next.js, Drizzle, PostgreSQL.",
       p3cat: "Telegram Mini App",
       p3desc:
         "Платформа публикации контента в Telegram-каналы с TMA, админкой и бот-синхронизацией участников.",
+      p4cat: "AI-платформа",
+      p4desc:
+        "Frontend AI-платформы: архитектура по FSD, SSR с инвалидацией кэша, админка, чат на WebSocket и авторизация на токенах.",
     },
     process: {
       label: "Как мы работаем",
@@ -197,15 +200,18 @@ const dictionaries = {
       title: "Recent",
       titleAccent: "projects",
       cta: "Start a project",
-      p1cat: "Telegram Mini App",
+      p1cat: "VPN Service",
       p1desc:
-        "TMA platform for organizing events: event creation, participant registration, profiles, and analytics. Next.js, Drizzle, PostgreSQL.",
-      p2cat: "VPN Service",
-      p2desc:
         "Telegram bot for VPN subscriptions with YooKassa and Telegram Stars payments, landing page, and user cabinet.",
+      p2cat: "Telegram Mini App",
+      p2desc:
+        "TMA platform for organizing events: event creation, participant registration, profiles, and analytics. Next.js, Drizzle, PostgreSQL.",
       p3cat: "Telegram Mini App",
       p3desc:
         "Content publishing platform for Telegram channels with TMA, admin panel, and member sync bot.",
+      p4cat: "AI Platform",
+      p4desc:
+        "Frontend for an AI platform: FSD architecture, SSR with cache invalidation, admin panel, WebSocket chat, and token-based auth.",
     },
     process: {
       label: "How we work",
@@ -300,10 +306,17 @@ interface I18nContextType {
 const I18nContext = createContext<I18nContextType | null>(null);
 
 export function I18nProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("ru");
+  const [locale, setLocaleState] = useState<Locale>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("locale");
+      if (saved === "ru" || saved === "en") return saved;
+    }
+    return "ru";
+  });
 
   const setLocale = useCallback((newLocale: Locale) => {
     setLocaleState(newLocale);
+    localStorage.setItem("locale", newLocale);
   }, []);
 
   const t = dictionaries[locale];
