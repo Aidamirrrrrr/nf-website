@@ -32,9 +32,9 @@ const dictionaries = {
       title: "Превращаем идеи в",
       titleAccent: "продукты",
       text1:
-        "Resolve Studio — студия fullstack-разработки под руководством Айдамира Камбиева. Команда из 4 разработчиков, которая ведёт проекты от идеи до деплоя. Мы создаём веб-приложения, Telegram Mini Apps, интернет-магазины и финтех-платформы, которые решают реальные бизнес-задачи.",
+        "NotFound Studio — студия fullstack-разработки с большой командой разработчиков, которая ведёт проекты от идеи до деплоя. Мы создаём веб-приложения, Telegram Mini Apps, интернет-магазины и финтех-платформы, которые решают реальные бизнес-задачи.",
       text2:
-        "Наш стек — TypeScript, React, Next.js, NestJS, PostgreSQL. Мы не просто пишем код — мы строим надёжную архитектуру, настраиваем CI/CD и сопровождаем продукт после запуска. 15+ проектов в продакшене за 2.5 года.",
+        "Наш стек — TypeScript, React, Next.js, NestJS, PostgreSQL. Мы не просто пишем код — мы строим надёжную архитектуру, настраиваем CI/CD и сопровождаем продукт после запуска. 10+ проектов в продакшене за 2.5 года.",
       stat1: "Года опыта",
       stat2: "Проектов в продакшене",
       stat3: "Довольных клиентов",
@@ -107,11 +107,15 @@ const dictionaries = {
       t1name: "Команда FlowAi",
       t1role: "CTO, FlowAi",
       t1text:
-        "Айдамир построил архитектуру фронтенда по FSD, сделал SSR с инвалидацией кэша, авторизацию на access/refresh токенах, масштабную админку и чат на WebSocket. Код чистый, сроки соблюдены.",
+        "Команда построила архитектуру фронтенда по FSD, сделала SSR с инвалидацией кэша, авторизацию на access/refresh токенах, масштабную админку и чат на WebSocket. Код чистый, сроки соблюдены.",
       t2name: "Команда Void",
       t2role: "Project Lead, Void",
       t2text:
         "Автоматизировали блог через OpenAI API — публикация сократилась с 2 часов до 5 минут. Плюс интерактивный лендинг на Pixi.js. Впечатляет.",
+      t3name: "Команда Club Events",
+      t3role: "Product Owner, Club Events",
+      t3text:
+        "Сделали TMA для мероприятий за 5 недель — регистрация, профили, аналитика. Стек Next.js + Drizzle. Работать комфортно, всё прозрачно.",
     },
     faq: {
       label: "FAQ",
@@ -137,7 +141,7 @@ const dictionaries = {
       stat1label: "ускорение запросов",
       stat2val: "24ч",
       stat2label: "время ответа",
-      stat3val: "15+",
+      stat3val: "10+",
       stat3label: "проектов",
     },
     contact: {
@@ -171,9 +175,9 @@ const dictionaries = {
       title: "We turn ideas into",
       titleAccent: "products",
       text1:
-        "Resolve Studio is a fullstack development studio led by Aidamir Kambiev. A team of 4 developers that takes projects from idea to deployment. We build web apps, Telegram Mini Apps, e-commerce platforms, and fintech solutions that solve real business challenges.",
+        "NotFound Studio is a fullstack development studio with a large team of developers that takes projects from idea to deployment. We build web apps, Telegram Mini Apps, e-commerce platforms, and fintech solutions that solve real business challenges.",
       text2:
-        "Our stack is TypeScript, React, Next.js, NestJS, PostgreSQL. We don't just write code — we build reliable architecture, set up CI/CD, and support the product after launch. 15+ projects in production in 2.5 years.",
+        "Our stack is TypeScript, React, Next.js, NestJS, PostgreSQL. We don't just write code — we build reliable architecture, set up CI/CD, and support the product after launch. 10+ projects in production in 2.5 years.",
       stat1: "Years of experience",
       stat2: "Projects in production",
       stat3: "Happy clients",
@@ -246,11 +250,15 @@ const dictionaries = {
       t1name: "FlowAi Team",
       t1role: "CTO, FlowAi",
       t1text:
-        "Aidamir built the frontend architecture with FSD, implemented SSR with cache invalidation, auth on access/refresh tokens, a large-scale admin panel, and a WebSocket chat. Clean code, deadlines met.",
+        "The team built the frontend architecture with FSD, implemented SSR with cache invalidation, auth on access/refresh tokens, a large-scale admin panel, and a WebSocket chat. Clean code, deadlines met.",
       t2name: "Void Team",
       t2role: "Project Lead, Void",
       t2text:
         "Automated the blog via OpenAI API — publishing went from 2 hours to 5 minutes. Plus an interactive landing page on Pixi.js. Impressive.",
+      t3name: "Club Events Team",
+      t3role: "Product Owner, Club Events",
+      t3text:
+        "Delivered a TMA for events in 5 weeks — registration, profiles, analytics. Next.js + Drizzle stack. Comfortable workflow, full transparency.",
     },
     faq: {
       label: "FAQ",
@@ -276,7 +284,7 @@ const dictionaries = {
       stat1label: "faster queries",
       stat2val: "24h",
       stat2label: "response time",
-      stat3val: "15+",
+      stat3val: "10+",
       stat3label: "projects",
     },
     contact: {
@@ -305,18 +313,28 @@ interface I18nContextType {
 
 const I18nContext = createContext<I18nContextType | null>(null);
 
-export function I18nProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>(() => {
-    if (typeof window !== "undefined") {
-      const saved = localStorage.getItem("locale");
-      if (saved === "ru" || saved === "en") return saved;
-    }
-    return "ru";
-  });
+function getCookie(name: string): string | null {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie.match(new RegExp(`(?:^|; )${name}=([^;]*)`));
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+function setCookie(name: string, value: string) {
+  document.cookie = `${name}=${value};path=/;max-age=${60 * 60 * 24 * 365};samesite=lax`;
+}
+
+export function I18nProvider({
+  children,
+  initialLocale = "ru",
+}: {
+  children: ReactNode;
+  initialLocale?: Locale;
+}) {
+  const [locale, setLocaleState] = useState<Locale>(initialLocale);
 
   const setLocale = useCallback((newLocale: Locale) => {
     setLocaleState(newLocale);
-    localStorage.setItem("locale", newLocale);
+    setCookie("locale", newLocale);
   }, []);
 
   const t = dictionaries[locale];

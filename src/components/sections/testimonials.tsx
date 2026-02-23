@@ -37,6 +37,15 @@ export function Testimonials() {
         .map((n) => n[0])
         .join(""),
     },
+    {
+      name: t.testimonials.t3name,
+      role: t.testimonials.t3role,
+      text: t.testimonials.t3text,
+      initials: t.testimonials.t3name
+        .split(" ")
+        .map((n) => n[0])
+        .join(""),
+    },
   ];
 
   const [active, setActive] = useState(0);
@@ -45,13 +54,11 @@ export function Testimonials() {
     setActive((p) => (p + 1) % testimonials.length);
   }, [testimonials.length]);
 
-  // Auto-advance
+  // Auto-advance — resets on manual click via `active` dependency
   useEffect(() => {
     const timer = setInterval(next, 7000);
     return () => clearInterval(timer);
-  }, [next]);
-
-  const current = testimonials[active];
+  }, [next, active]);
 
   // Parallax watermark
   const { scrollYProgress } = useScroll({
@@ -101,35 +108,37 @@ export function Testimonials() {
 
         {/* Two-column layout: big quote left, selector right */}
         <div className="grid items-start gap-12 lg:grid-cols-5 lg:gap-20">
-          {/* Left: large quote */}
-          <div className="lg:col-span-3">
-            <motion.div
-              key={active}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <LocaleTransition>
-                <blockquote className="mb-10 text-2xl leading-relaxed font-light text-neutral-300 sm:text-3xl lg:text-4xl lg:leading-snug">
-                  &ldquo;{current.text}&rdquo;
-                </blockquote>
-              </LocaleTransition>
+          {/* Left: large quote — all rendered, tallest sets height */}
+          <div className="relative lg:col-span-3">
+            {testimonials.map((item, i) => (
+              <div
+                key={i}
+                className={i === 0 ? "relative" : "absolute inset-0"}
+                aria-hidden={i !== active}
+              >
+                <motion.div
+                  animate={{ opacity: i === active ? 1 : 0 }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className={i === active ? "" : "pointer-events-none"}
+                >
+                  <blockquote className="mb-10 text-2xl leading-relaxed font-light text-neutral-300 sm:text-3xl lg:text-4xl lg:leading-snug">
+                    &ldquo;{item.text}&rdquo;
+                  </blockquote>
 
-              {/* Author */}
-              <div className="flex items-center gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-sm font-bold text-black">
-                  {current.initials}
-                </div>
-                <div>
-                  <LocaleTransition>
-                    <p className="text-base font-semibold text-white">
-                      {current.name}
-                    </p>
-                    <p className="text-sm text-neutral-500">{current.role}</p>
-                  </LocaleTransition>
-                </div>
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-sm font-bold text-black">
+                      {item.initials}
+                    </div>
+                    <div>
+                      <p className="text-base font-semibold text-white">
+                        {item.name}
+                      </p>
+                      <p className="text-sm text-neutral-500">{item.role}</p>
+                    </div>
+                  </div>
+                </motion.div>
               </div>
-            </motion.div>
+            ))}
           </div>
 
           {/* Right: selector list */}

@@ -18,7 +18,7 @@ import { Logo } from "@/components/logo";
 const footerLinks = [
   { labelRu: "О нас", labelEn: "About", href: "#about" },
   { labelRu: "Услуги", labelEn: "Services", href: "#services" },
-  { labelRu: "Работы", labelEn: "Work", href: "#projects" },
+  { labelRu: "Работы", labelEn: "Work", href: "#work" },
 ];
 
 /* ── Magnetic link component ── */
@@ -104,12 +104,12 @@ function FloatingField({
           setFocused(false);
           setTouched(true);
         }}
-        className={`peer w-full border-b-2 bg-transparent pb-2 pt-6 text-sm text-black outline-none transition-all duration-300 ${
+        className={`peer w-full border-b-2 bg-transparent pb-2 pt-6 text-sm text-white outline-none transition-all duration-300 ${
           isEmpty || isInvalidEmail
             ? "border-red-400"
             : focused
-              ? "border-black"
-              : "border-neutral-200 hover:border-neutral-400"
+              ? "border-white"
+              : "border-neutral-700 hover:border-neutral-500"
         }`}
       />
       <span
@@ -119,15 +119,15 @@ function FloatingField({
           isEmpty || isInvalidEmail
             ? "text-red-400"
             : focused
-              ? "text-black"
-              : "text-neutral-400"
+              ? "text-white"
+              : "text-neutral-500"
         }`}
       >
         {label}
       </span>
       {/* Animated underline */}
       <motion.span
-        className="absolute bottom-0 left-0 h-0.5 bg-black"
+        className="absolute bottom-0 left-0 h-0.5 bg-white"
         initial={{ scaleX: 0 }}
         animate={{ scaleX: focused ? 1 : 0 }}
         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
@@ -142,7 +142,7 @@ function FloatingField({
             exit={{ opacity: 0, y: -4 }}
             className="absolute -bottom-5 left-0 text-[11px] text-red-400"
           >
-            {type === "email" ? "Email required" : "Required"}
+            {label}
           </motion.span>
         )}
         {isInvalidEmail && (
@@ -152,7 +152,7 @@ function FloatingField({
             exit={{ opacity: 0, y: -4 }}
             className="absolute -bottom-5 left-0 text-[11px] text-red-400"
           >
-            Invalid email
+            {label}
           </motion.span>
         )}
       </AnimatePresence>
@@ -196,25 +196,25 @@ function FloatingTextarea({
           setTouched(true);
         }}
         rows={4}
-        className={`peer w-full resize-none border-b-2 bg-transparent pb-2 pt-6 text-sm text-black outline-none transition-all duration-300 ${
+        className={`peer w-full resize-none border-b-2 bg-transparent pb-2 pt-6 text-sm text-white outline-none transition-all duration-300 ${
           isEmpty
             ? "border-red-400"
             : focused
-              ? "border-black"
-              : "border-neutral-200 hover:border-neutral-400"
+              ? "border-white"
+              : "border-neutral-700 hover:border-neutral-500"
         }`}
       />
       <span
         className={`pointer-events-none absolute left-0 transition-all duration-300 ${
           isActive ? "top-0 text-[11px] tracking-wider" : "top-5 text-sm"
         } ${
-          isEmpty ? "text-red-400" : focused ? "text-black" : "text-neutral-400"
+          isEmpty ? "text-red-400" : focused ? "text-white" : "text-neutral-500"
         }`}
       >
         {label}
       </span>
       <motion.span
-        className="absolute bottom-0 left-0 h-0.5 bg-black"
+        className="absolute bottom-0 left-0 h-0.5 bg-white"
         initial={{ scaleX: 0 }}
         animate={{ scaleX: focused ? 1 : 0 }}
         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
@@ -228,7 +228,7 @@ function FloatingTextarea({
             exit={{ opacity: 0, y: -4 }}
             className="absolute -bottom-5 left-0 text-[11px] text-red-400"
           >
-            Required
+            {label}
           </motion.span>
         )}
       </AnimatePresence>
@@ -244,8 +244,10 @@ function ContactForm({ isInView, isRu }: { isInView: boolean; isRu: boolean }) {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     // Basic validation
     if (
@@ -256,9 +258,28 @@ function ContactForm({ isInView, isRu }: { isInView: boolean; isRu: boolean }) {
     ) {
       return;
     }
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 3000);
-    setFormData({ name: "", email: "", message: "" });
+
+    setLoading(true);
+    setError(false);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, locale: isRu ? "ru" : "en" }),
+      });
+
+      if (!res.ok) throw new Error();
+
+      setSubmitted(true);
+      setFormData({ name: "", email: "", message: "" });
+      setTimeout(() => setSubmitted(false), 4000);
+    } catch {
+      setError(true);
+      setTimeout(() => setError(false), 4000);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -304,9 +325,10 @@ function ContactForm({ isInView, isRu }: { isInView: boolean; isRu: boolean }) {
       >
         <motion.button
           type="submit"
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
-          className="group inline-flex items-center gap-3 rounded-full border border-black bg-black px-8 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-neutral-800"
+          disabled={loading}
+          whileHover={{ scale: loading ? 1 : 1.02 }}
+          whileTap={{ scale: loading ? 1 : 0.98 }}
+          className="group inline-flex items-center gap-3 rounded-full border border-white bg-white px-8 py-3.5 text-sm font-semibold text-black transition-all duration-300 hover:bg-neutral-200 disabled:opacity-70 disabled:cursor-not-allowed"
         >
           <AnimatePresence mode="wait">
             {submitted ? (
@@ -316,9 +338,28 @@ function ContactForm({ isInView, isRu }: { isInView: boolean; isRu: boolean }) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
               >
-                {isRu
-                  ? "\u041e\u0442\u043f\u0440\u0430\u0432\u043b\u0435\u043d\u043e \u2713"
-                  : "Sent \u2713"}
+                {isRu ? "Отправлено ✓" : "Sent ✓"}
+              </motion.span>
+            ) : error ? (
+              <motion.span
+                key="error"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="text-red-600"
+              >
+                {isRu ? "Ошибка, попробуйте снова" : "Error, try again"}
+              </motion.span>
+            ) : loading ? (
+              <motion.span
+                key="loading"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="inline-flex items-center gap-2"
+              >
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-black border-t-transparent" />
+                {isRu ? "Отправка..." : "Sending..."}
               </motion.span>
             ) : (
               <motion.span
@@ -328,9 +369,7 @@ function ContactForm({ isInView, isRu }: { isInView: boolean; isRu: boolean }) {
                 exit={{ opacity: 0, y: -10 }}
                 className="inline-flex items-center gap-3"
               >
-                {isRu
-                  ? "\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c"
-                  : "Send message"}
+                {isRu ? "Отправить" : "Send message"}
                 <Send className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </motion.span>
             )}
@@ -357,14 +396,15 @@ export function Contact() {
     <section
       id="contact"
       ref={sectionRef}
-      className="relative z-10 overflow-hidden bg-neutral-50 py-20 sm:py-32 lg:py-48"
+      data-nav-theme="dark"
+      className="relative z-10 overflow-hidden bg-neutral-950 py-20 sm:py-32 lg:py-48"
     >
       {/* Background decorative */}
       <motion.div
         style={{ y: bgY }}
         className="pointer-events-none absolute -right-10 top-1/2 -translate-y-1/2 select-none"
       >
-        <span className="font-mono text-[20rem] font-black leading-none text-neutral-100 lg:text-[30rem]">
+        <span className="font-mono text-[20rem] font-black leading-none text-white/5 lg:text-[30rem]">
           @
         </span>
       </motion.div>
@@ -378,13 +418,13 @@ export function Contact() {
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
             <LocaleTransition>
-              <span className="mb-4 inline-flex items-center gap-2 font-mono text-sm uppercase tracking-widest text-neutral-400">
-                <span className="inline-block h-px w-8 bg-neutral-300" />
+              <span className="mb-4 inline-flex items-center gap-2 font-mono text-sm uppercase tracking-widest text-neutral-500">
+                <span className="inline-block h-px w-8 bg-neutral-700" />
                 {t.contact.label}
               </span>
-              <h2 className="text-4xl font-bold leading-tight tracking-tight text-black sm:text-5xl lg:text-6xl">
+              <h2 className="text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
                 {t.contact.title}{" "}
-                <span className="text-neutral-300">
+                <span className="text-neutral-600">
                   {t.contact.titleAccent}
                 </span>
               </h2>
@@ -398,7 +438,7 @@ export function Contact() {
             className="md:text-right"
           >
             <LocaleTransition>
-              <p className="max-w-sm text-sm leading-relaxed text-neutral-400 md:ml-auto">
+              <p className="max-w-sm text-sm leading-relaxed text-neutral-500 md:ml-auto">
                 {t.contact.text}
               </p>
             </LocaleTransition>
@@ -420,11 +460,11 @@ export function Contact() {
                 href="mailto:hello@not-found.tech"
                 className="group relative inline-block"
               >
-                <span className="text-xl font-bold tracking-tight text-black transition-colors duration-300 group-hover:text-neutral-500 sm:text-3xl lg:text-4xl">
+                <span className="text-xl font-bold tracking-tight text-white transition-colors duration-300 group-hover:text-neutral-400 sm:text-3xl lg:text-4xl">
                   hello@not-found.tech
                 </span>
                 <motion.span
-                  className="absolute -bottom-2 left-0 h-px w-full origin-left bg-black/20"
+                  className="absolute -bottom-2 left-0 h-px w-full origin-left bg-white/20"
                   initial={{ scaleX: 0 }}
                   animate={isInView ? { scaleX: 1 } : {}}
                   transition={{
@@ -451,16 +491,16 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative z-10 border-t border-neutral-200 bg-neutral-50 py-8">
+    <footer className="relative z-10 border-t border-neutral-800 bg-neutral-950 py-8">
       <div className="mx-auto max-w-6xl px-6 lg:px-12">
         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row sm:gap-4">
           {/* Left: logo + copyright */}
           <div className="flex items-center gap-4">
             <a href="#" className="inline-flex">
-              <Logo variant="light" size="small" />
+              <Logo variant="dark" size="small" />
             </a>
-            <span className="h-3 w-px bg-neutral-200" />
-            <div className="flex items-center gap-1 text-xs text-neutral-400">
+            <span className="h-3 w-px bg-neutral-700" />
+            <div className="flex items-center gap-1 text-xs text-neutral-500">
               <span>&copy; {year}</span>
               <span>·</span>
               <LocaleTransition className="inline">
@@ -475,7 +515,7 @@ export function Footer() {
               <a
                 key={link.href}
                 href={link.href}
-                className="text-xs text-neutral-400 transition-colors duration-200 hover:text-black"
+                className="text-xs text-neutral-500 transition-colors duration-200 hover:text-white"
               >
                 {isRu ? link.labelRu : link.labelEn}
               </a>

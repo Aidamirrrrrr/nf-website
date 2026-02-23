@@ -6,10 +6,16 @@ import {
   useMotionValueEvent,
   AnimatePresence,
 } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useI18n, type Locale } from "@/lib/i18n";
 import { LocaleTransition } from "@/components/locale-transition";
 import { Logo } from "@/components/logo";
+import { ChevronDown } from "lucide-react";
+
+const localeOptions: { value: Locale; label: string }[] = [
+  { value: "en", label: "EN" },
+  { value: "ru", label: "RU" },
+];
 
 export function Navigation() {
   const [scrolled, setScrolled] = useState(false);
@@ -17,6 +23,30 @@ export function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { scrollY } = useScroll();
   const { locale, t, setLocale } = useI18n();
+
+  const [langOpen, setLangOpen] = useState(false);
+  const langRef = useRef<HTMLDivElement>(null);
+
+  // Close lang dropdown on outside click or ESC
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setLangOpen(false);
+      }
+    };
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setLangOpen(false);
+        setMobileOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, []);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     setScrolled(latest > 50);
@@ -127,17 +157,52 @@ export function Navigation() {
           </div>
 
           <div className="flex items-center gap-6">
-            <button
-              type="button"
-              onClick={() => setLocale(locale === "ru" ? "en" : "ru")}
-              className={`font-mono text-xs font-medium uppercase tracking-wider transition-colors duration-500 ${
-                menuIsDark
-                  ? "text-neutral-500 hover:text-white"
-                  : "text-neutral-400 hover:text-black"
-              }`}
-            >
-              {locale === "ru" ? "EN" : "RU"}
-            </button>
+            {/* Language switcher */}
+            <div ref={langRef} className="relative">
+              <button
+                type="button"
+                onClick={() => setLangOpen(!langOpen)}
+                className={`flex items-center gap-1 font-mono text-xs font-medium uppercase tracking-wider transition-colors duration-500 ${
+                  menuIsDark
+                    ? "text-neutral-500 hover:text-white"
+                    : "text-neutral-400 hover:text-black"
+                }`}
+              >
+                {locale.toUpperCase()}
+                <ChevronDown
+                  className={`h-3 w-3 transition-transform duration-200 ${langOpen ? "rotate-180" : ""}`}
+                />
+              </button>
+              <AnimatePresence>
+                {langOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -4, scale: 0.95 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -4, scale: 0.95 }}
+                    transition={{ duration: 0.15, ease: "easeOut" }}
+                    className="absolute right-0 top-full mt-2 overflow-hidden rounded-lg border border-neutral-800 bg-neutral-950 shadow-xl"
+                  >
+                    {localeOptions.map((opt) => (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        onClick={() => {
+                          setLocale(opt.value);
+                          setLangOpen(false);
+                        }}
+                        className={`flex w-full items-center gap-2 px-4 py-2 font-mono text-xs uppercase tracking-wider transition-colors duration-150 ${
+                          locale === opt.value
+                            ? "bg-white/10 text-white"
+                            : "text-neutral-400 hover:bg-white/5 hover:text-white"
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
             <a
               href="#contact"
               className={`hidden items-center gap-1.5 text-sm font-medium transition-all duration-500 md:inline-flex ${

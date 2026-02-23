@@ -26,15 +26,14 @@ export function CtaBanner() {
   return (
     <section
       ref={sectionRef}
-      data-nav-theme="dark"
-      className="relative z-10 overflow-hidden bg-neutral-950 py-20 sm:py-32 lg:py-48"
+      className="relative z-10 overflow-hidden bg-neutral-50 py-20 sm:py-32 lg:py-48"
     >
       {/* Background watermark */}
       <motion.div
         style={{ y: bgY }}
         className="pointer-events-none absolute -right-10 top-1/2 -translate-y-1/2 select-none"
       >
-        <span className="font-mono text-[20rem] font-black leading-none text-white/5 lg:text-[30rem]">
+        <span className="font-mono text-[20rem] font-black leading-none text-black/3 lg:text-[30rem]">
           →
         </span>
       </motion.div>
@@ -48,13 +47,13 @@ export function CtaBanner() {
           className="mb-20 lg:mb-28"
         >
           <LocaleTransition>
-            <span className="mb-4 inline-flex items-center gap-2 font-mono text-sm uppercase tracking-widest text-neutral-500">
-              <span className="inline-block h-px w-8 bg-neutral-700" />
+            <span className="mb-4 inline-flex items-center gap-2 font-mono text-sm uppercase tracking-widest text-neutral-400">
+              <span className="inline-block h-px w-8 bg-neutral-300" />
               CTA
             </span>
-            <h2 className="text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+            <h2 className="text-4xl font-bold leading-tight tracking-tight text-black sm:text-5xl lg:text-6xl">
               {t.ctaBanner.title}{" "}
-              <span className="text-neutral-600">
+              <span className="text-neutral-400">
                 {t.ctaBanner.titleAccent}
               </span>
             </h2>
@@ -71,7 +70,7 @@ export function CtaBanner() {
               transition={{ duration: 0.8, delay: 0.15 }}
             >
               <LocaleTransition>
-                <p className="mb-10 max-w-md text-base leading-relaxed text-neutral-400 lg:text-lg">
+                <p className="mb-10 max-w-md text-base leading-relaxed text-neutral-500 lg:text-lg">
                   {t.ctaBanner.text}
                 </p>
               </LocaleTransition>
@@ -81,7 +80,7 @@ export function CtaBanner() {
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.8, delay: 0.3 }}
                 href="#contact"
-                className="group inline-flex items-center gap-3 rounded-full bg-white px-8 py-4 text-sm font-semibold text-black transition-all duration-300 hover:gap-5 hover:bg-neutral-200"
+                className="group inline-flex items-center gap-3 rounded-full bg-black px-8 py-4 text-sm font-semibold text-white transition-all duration-300 hover:gap-5 hover:bg-neutral-800"
               >
                 <LocaleTransition className="inline">
                   {t.ctaBanner.cta}
@@ -103,7 +102,7 @@ export function CtaBanner() {
                   delay: 0.2 + i * 0.1,
                   ease: [0.16, 1, 0.3, 1],
                 }}
-                className="flex items-baseline justify-between border-b border-neutral-800 py-8 first:pt-0 last:border-b-0"
+                className="flex items-baseline justify-between border-b border-neutral-200 py-8 first:pt-0 last:border-b-0"
               >
                 <LocaleTransition>
                   <span className="text-xs uppercase tracking-widest text-neutral-500">
@@ -111,7 +110,7 @@ export function CtaBanner() {
                   </span>
                 </LocaleTransition>
                 <LocaleTransition>
-                  <span className="text-4xl font-bold text-white sm:text-5xl">
+                  <span className="text-4xl font-bold text-black sm:text-5xl">
                     {stat.value}
                   </span>
                 </LocaleTransition>

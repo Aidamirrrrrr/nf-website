@@ -11,11 +11,18 @@ import { Faq } from "@/components/sections/faq";
 import { CtaBanner } from "@/components/sections/cta-banner";
 import { Contact, Footer } from "@/components/sections/contact";
 import { I18nProvider } from "@/lib/i18n";
+import type { Locale } from "@/lib/i18n";
 import { CustomCursor } from "@/components/custom-cursor";
+import { cookies } from "next/headers";
 
-export default function Home() {
+export default async function Home() {
+  const cookieStore = await cookies();
+  const localeCookie = cookieStore.get("locale")?.value;
+  const initialLocale: Locale =
+    localeCookie === "en" || localeCookie === "ru" ? localeCookie : "ru";
+
   return (
-    <I18nProvider>
+    <I18nProvider initialLocale={initialLocale}>
       <CustomCursor />
       <SmoothScroll>
         <Navigation />
