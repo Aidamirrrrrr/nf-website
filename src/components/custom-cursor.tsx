@@ -1,5 +1,7 @@
 "use client";
 
+/** Кастомный курсор с пружинной анимацией и ripple-эффектом. */
+
 import {
   motion,
   useMotionValue,
@@ -14,6 +16,7 @@ interface ClickRipple {
   y: number;
 }
 
+/** Кастомный курсор с пружинной анимацией и ripple-эффектом при клике. */
 export function CustomCursor() {
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
@@ -31,7 +34,6 @@ export function CustomCursor() {
     setRipples((prev) => prev.filter((r) => r.id !== id));
   }, []);
 
-  // Detect touch devices — hide custom cursor entirely
   useEffect(() => {
     const isTouchDevice =
       "ontouchstart" in window ||
@@ -43,7 +45,6 @@ export function CustomCursor() {
   useEffect(() => {
     if (isTouch) return;
 
-    // Force hide system cursor on macOS
     document.documentElement.style.setProperty("cursor", "none", "important");
     document.body.style.setProperty("cursor", "none", "important");
 
@@ -109,7 +110,6 @@ export function CustomCursor() {
 
   return (
     <>
-      {/* Click ripples */}
       <AnimatePresence>
         {ripples.map((ripple) => (
           <motion.div
@@ -127,7 +127,6 @@ export function CustomCursor() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             onAnimationComplete={() => removeRipple(ripple.id)}
           >
-            {/* Ring 1 */}
             <motion.div
               className="absolute top-1/2 left-1/2 rounded-full"
               style={{
@@ -152,7 +151,6 @@ export function CustomCursor() {
               }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             />
-            {/* Ring 2 (delayed) */}
             <motion.div
               className="absolute top-1/2 left-1/2 rounded-full"
               style={{
@@ -181,7 +179,6 @@ export function CustomCursor() {
                 ease: [0.16, 1, 0.3, 1],
               }}
             />
-            {/* Center dot burst */}
             <motion.div
               className="absolute top-1/2 left-1/2 rounded-full"
               style={{
@@ -208,7 +205,6 @@ export function CustomCursor() {
         ))}
       </AnimatePresence>
 
-      {/* Main cursor dot */}
       <motion.div
         className="pointer-events-none fixed top-0 left-0 z-9999 mix-blend-difference"
         style={{
@@ -229,7 +225,6 @@ export function CustomCursor() {
         />
       </motion.div>
 
-      {/* Outer ring */}
       <motion.div
         className="pointer-events-none fixed top-0 left-0 z-9998 mix-blend-difference"
         style={{

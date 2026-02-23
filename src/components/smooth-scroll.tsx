@@ -3,6 +3,7 @@
 import Lenis from "lenis";
 import { useEffect } from "react";
 
+/** Обёртка плавного скролла на базе Lenis. */
 export function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const lenis = new Lenis({

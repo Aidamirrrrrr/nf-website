@@ -4,6 +4,7 @@ import { Canvas, useFrame } from "@react-three/fiber";
 import { Suspense, useRef, useEffect, useMemo } from "react";
 import * as THREE from "three";
 
+/** Поле партиклей с реакцией на мышь. */
 function ParticleField() {
   const pointsRef = useRef<THREE.Points>(null);
   const mouseRef = useRef({ x: 0, y: 0 });
@@ -46,7 +47,6 @@ function ParticleField() {
       arr[i * 3 + 1] += velocities[i * 3 + 1];
       arr[i * 3 + 2] += velocities[i * 3 + 2];
 
-      // Wrap around
       if (arr[i * 3] > 12.5) arr[i * 3] = -12.5;
       if (arr[i * 3] < -12.5) arr[i * 3] = 12.5;
       if (arr[i * 3 + 1] > 7.5) arr[i * 3 + 1] = -7.5;
@@ -55,7 +55,6 @@ function ParticleField() {
 
     posAttr.needsUpdate = true;
 
-    // React to mouse
     pointsRef.current.rotation.y +=
       (mouseRef.current.x * 0.05 - pointsRef.current.rotation.y) * 0.02;
     pointsRef.current.rotation.x +=
@@ -84,6 +83,7 @@ function ParticleField() {
   );
 }
 
+/** Линии связей между близкими точками. */
 function ConnectionLines() {
   const lineRef = useRef<THREE.LineSegments>(null);
   const pointCount = 120;
@@ -116,7 +116,6 @@ function ConnectionLines() {
   useFrame(() => {
     if (!lineRef.current) return;
 
-    // Move points
     for (let i = 0; i < pointCount; i++) {
       points[i * 3] += velocities[i * 3];
       points[i * 3 + 1] += velocities[i * 3 + 1];
@@ -127,7 +126,6 @@ function ConnectionLines() {
       if (Math.abs(points[i * 3 + 2]) > 4) velocities[i * 3 + 2] *= -1;
     }
 
-    // Draw lines between close points
     let lineIndex = 0;
     const threshold = 4;
     for (let i = 0; i < pointCount; i++) {
@@ -148,7 +146,6 @@ function ConnectionLines() {
       }
     }
 
-    // Fill remaining with zeros
     for (let i = lineIndex; i < linePositions.length; i++) {
       linePositions[i] = 0;
     }

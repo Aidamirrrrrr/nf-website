@@ -12,7 +12,7 @@ import { useRef, useEffect } from "react";
 import { useI18n } from "@/lib/i18n";
 import { LocaleTransition } from "@/components/locale-transition";
 
-// About section slides over the sticky Hero
+/** Секция «О нас» с параллаксом и анимированными счётчиками статистики. */
 
 function Counter({
   value,
@@ -100,7 +100,6 @@ export function About() {
       data-nav-theme="dark"
       className="relative z-10 overflow-hidden rounded-t-[2rem] bg-neutral-950 py-20 shadow-[0_-20px_60px_rgba(0,0,0,0.3)] sm:py-32 lg:py-48"
     >
-      {/* Big parallax 404 */}
       <motion.div
         style={{ y: bgY }}
         className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 select-none"
@@ -156,7 +155,6 @@ export function About() {
           </ParallaxText>
         </div>
 
-        {/* Stats */}
         <motion.div
           ref={statsRef}
           initial={{ opacity: 0, y: 40 }}

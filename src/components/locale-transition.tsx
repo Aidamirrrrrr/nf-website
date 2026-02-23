@@ -10,11 +10,8 @@ import {
 } from "react";
 
 /**
- * Animates text on locale change with a slide-up reveal effect.
- * Container keeps its size via overflow:hidden — no layout shift.
- *
- * Phase 1: old text slides up & fades out (200ms)
- * Phase 2: new text slides up from below & fades in (300ms)
+ * Анимация смены языка — slide-up эффект.
+ * Контейнер сохраняет размер через overflow:hidden — без сдвигов лейаута.
  */
 export function LocaleTransition({
   children,
@@ -28,7 +25,6 @@ export function LocaleTransition({
   const [phase, setPhase] = useState<"idle" | "out" | "in">("idle");
   const [displayChildren, setDisplayChildren] = useState(children);
 
-  // Store latest children for phase transitions
   const latestChildren = useRef(children);
   latestChildren.current = children;
 
@@ -36,13 +32,10 @@ export function LocaleTransition({
     if (prevLocale.current !== locale) {
       prevLocale.current = locale;
 
-      // Phase 1: slide old text out (up)
       setPhase("out");
 
       const t1 = setTimeout(() => {
-        // Swap content while invisible
         setDisplayChildren(latestChildren.current);
-        // Phase 2: slide new text in (from below)
         setPhase("in");
       }, 200);
 
@@ -55,7 +48,6 @@ export function LocaleTransition({
         clearTimeout(t2);
       };
     }
-    // Update children normally when not switching
     setDisplayChildren(children);
   }, [locale, children]);
 
@@ -84,11 +76,9 @@ export function LocaleTransition({
     }
   }, [phase]);
 
-  // When phase is "in", we need to start from below
   const [mounted, setMounted] = useState(true);
   useEffect(() => {
     if (phase === "in") {
-      // Force a reflow so "from below" starting position applies
       setMounted(false);
       requestAnimationFrame(() => {
         setMounted(true);

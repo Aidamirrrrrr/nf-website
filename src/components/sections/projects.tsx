@@ -1,5 +1,7 @@
 "use client";
 
+/** Секция проектов — стэк карточек с параллакс-скроллом. */
+
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { useI18n } from "@/lib/i18n";
@@ -14,7 +16,7 @@ interface Project {
   tags: string[];
 }
 
-/* ─── Stacked card (scroll-pinned) ─── */
+/** Карточка проекта с фиксацией при скролле. */
 function StackedCard({
   project,
   index,
@@ -30,10 +32,8 @@ function StackedCard({
     offset: ["start end", "start start"],
   });
 
-  // Each card sticks slightly lower than the previous
   const topOffset = 120 + index * 40;
 
-  // Slight scale-down as next card arrives
   const scale = useTransform(
     scrollYProgress,
     [0.7, 1],
@@ -57,7 +57,6 @@ function StackedCard({
                 : "border-neutral-200 bg-white hover:border-neutral-300 hover:shadow-2xl hover:shadow-neutral-200/50"
             }`}
           >
-            {/* Background grid */}
             <div
               className={`pointer-events-none absolute inset-0 ${isEven ? "opacity-[0.03]" : "opacity-[0.02]"}`}
             >
@@ -85,11 +84,8 @@ function StackedCard({
               </svg>
             </div>
 
-            {/* Card content */}
             <div className="relative flex flex-col gap-6 p-6 sm:gap-8 sm:p-10 lg:flex-row lg:items-end lg:justify-between lg:p-16">
-              {/* Left: main info */}
               <div className="flex-1">
-                {/* Top meta line */}
                 <div className="mb-8 flex items-center gap-4 lg:mb-12">
                   <span
                     className={`font-mono text-xs uppercase tracking-[0.2em] ${
@@ -108,7 +104,6 @@ function StackedCard({
                   </span>
                 </div>
 
-                {/* Title */}
                 <h3
                   className={`mb-3 text-3xl font-bold tracking-tight transition-transform duration-500 group-hover:translate-x-2 sm:mb-4 sm:text-5xl lg:text-7xl ${
                     isEven ? "text-white" : "text-black"
@@ -117,7 +112,6 @@ function StackedCard({
                   {project.title}
                 </h3>
 
-                {/* Description */}
                 <LocaleTransition>
                   <p
                     className={`mb-8 max-w-lg text-sm leading-relaxed sm:text-base ${
@@ -128,7 +122,6 @@ function StackedCard({
                   </p>
                 </LocaleTransition>
 
-                {/* Tags */}
                 <div className="flex flex-wrap gap-2">
                   <LocaleTransition>
                     <span
@@ -156,7 +149,6 @@ function StackedCard({
                 </div>
               </div>
 
-              {/* Right: big number + CTA */}
               <div className="flex shrink-0 items-end justify-between gap-8 lg:flex-col lg:items-end">
                 <span
                   className={`font-mono text-6xl font-black leading-none sm:text-9xl lg:text-[11rem] ${
@@ -190,7 +182,7 @@ function StackedCard({
   );
 }
 
-/* ─── Main section ─── */
+/** Секция портфолио со стопкой карточек. */
 export function Projects() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -234,7 +226,6 @@ export function Projects() {
       ref={sectionRef}
       className="relative z-10 bg-neutral-50 py-20 sm:py-32 lg:py-48"
     >
-      {/* Header */}
       <div className="mx-auto max-w-6xl px-6 lg:px-12">
         <motion.div
           ref={headerRef}
@@ -272,7 +263,6 @@ export function Projects() {
         </motion.div>
       </div>
 
-      {/* Stacked cards */}
       {projects.map((project, i) => (
         <StackedCard
           key={project.title}
@@ -282,7 +272,6 @@ export function Projects() {
         />
       ))}
 
-      {/* Mobile CTA */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={headerInView ? { opacity: 1, y: 0 } : {}}

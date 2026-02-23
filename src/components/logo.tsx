@@ -1,6 +1,4 @@
-/**
- * NotFound Studio logo — text-only with NF monogram block.
- */
+/** Логотип NotFound Studio — монограмма NF + текстовая часть. */
 export function Logo({
   variant = "light",
   size = "default",
@@ -12,7 +10,6 @@ export function Logo({
 
   return (
     <span className="group inline-flex items-center gap-2.5">
-      {/* NF monogram block */}
       <span
         className={`inline-flex items-center justify-center rounded-md font-mono font-black tracking-tighter transition-all duration-500 ${
           isSmall ? "h-6 w-6 text-[10px]" : "h-7 w-7 text-xs"
@@ -24,7 +21,6 @@ export function Logo({
       >
         NF
       </span>
-      {/* Wordmark */}
       <span className="flex items-baseline gap-px">
         <span
           className={`font-mono font-bold tracking-tighter transition-colors duration-500 ${

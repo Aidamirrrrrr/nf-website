@@ -125,7 +125,6 @@
   }
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -140,7 +139,6 @@
   background: #a3a3a3;
 }
 
-/* Selection */
 ::selection {
   background: #0a0a0a;
   color: #ffffff;
@@ -151,14 +149,12 @@
   color: #0a0a0a;
 }
 
-/* Hide system cursor — desktop only */
 @media (pointer: fine) {
   html,
   html * {
     cursor: none !important;
   }
 
-  /* Transparent cursor fallback for macOS */
   html {
     cursor:
       url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1' height='1'/%3E")
@@ -167,9 +163,7 @@
   }
 }
 
-/* Smooth scroll handled by Lenis */
 
-/* Marquee animations */
 @keyframes marquee-left {
   0% {
     transform: translateX(0);
@@ -188,7 +182,6 @@
   }
 }
 
-/* Firefox scrollbar */
 html {
   scrollbar-width: thin;
   scrollbar-color: #a3a3a3 transparent;

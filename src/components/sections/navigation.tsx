@@ -1,5 +1,7 @@
 "use client";
 
+/** Фиксированная навигация с определением тёмных секций и переключателем языка. */
+
 import {
   motion,
   useScroll,
@@ -17,6 +19,7 @@ const localeOptions: { value: Locale; label: string }[] = [
   { value: "ru", label: "RU" },
 ];
 
+/** Фиксированная навигация с определением тёмных секций и переключателем языка. */
 export function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [isDark, setIsDark] = useState(false);
@@ -27,7 +30,6 @@ export function Navigation() {
   const [langOpen, setLangOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
 
-  // Close lang dropdown on outside click or ESC
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (langRef.current && !langRef.current.contains(e.target as Node)) {
@@ -52,7 +54,6 @@ export function Navigation() {
     setScrolled(latest > 50);
   });
 
-  // Close mobile menu on resize to desktop
   useEffect(() => {
     const onResize = () => {
       if (window.innerWidth >= 768) setMobileOpen(false);
@@ -61,7 +62,6 @@ export function Navigation() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => {
@@ -69,7 +69,6 @@ export function Navigation() {
     };
   }, [mobileOpen]);
 
-  // Detect dark-background sections via data-nav-theme="dark"
   useEffect(() => {
     const darkSections = document.querySelectorAll<HTMLElement>(
       '[data-nav-theme="dark"]',
@@ -90,7 +89,7 @@ export function Navigation() {
         setIsDark(activeDark.size > 0);
       },
       {
-        rootMargin: "0px 0px -95% 0px", // only top ~5% of viewport
+        rootMargin: "0px 0px -95% 0px",
       },
     );
 
@@ -132,7 +131,6 @@ export function Navigation() {
             <Logo variant={menuIsDark ? "dark" : "light"} />
           </a>
 
-          {/* Desktop nav links */}
           <div className="hidden items-center gap-10 md:flex">
             {navItems.map((item) => (
               <a
@@ -157,7 +155,6 @@ export function Navigation() {
           </div>
 
           <div className="flex items-center gap-6">
-            {/* Language switcher */}
             <div ref={langRef} className="relative">
               <button
                 type="button"
@@ -217,7 +214,6 @@ export function Navigation() {
               <span className="leading-none">&rarr;</span>
             </a>
 
-            {/* Mobile hamburger */}
             <button
               type="button"
               onClick={() => setMobileOpen(!mobileOpen)}
@@ -245,7 +241,6 @@ export function Navigation() {
         </div>
       </motion.nav>
 
-      {/* Mobile fullscreen menu */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div

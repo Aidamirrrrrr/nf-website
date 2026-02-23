@@ -1,5 +1,7 @@
 "use client";
 
+/** Главный экран (hero) с бегущей строкой и CTA-кнопкой. */
+
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { ArrowUpRight } from "lucide-react";
@@ -52,7 +54,6 @@ export function Hero() {
       ref={sectionRef}
       className="sticky top-0 z-0 flex min-h-screen flex-col overflow-hidden bg-white"
     >
-      {/* Dot grid background */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.035]"
         style={{
@@ -61,7 +62,6 @@ export function Hero() {
         }}
       />
 
-      {/* Large NF watermark */}
       <motion.div
         style={{ y: watermarkY }}
         className="pointer-events-none absolute -right-[5%] top-1/2 -translate-y-1/2 select-none"
@@ -76,7 +76,6 @@ export function Hero() {
         </motion.span>
       </motion.div>
 
-      {/* Mouse-following gradient orb */}
       <motion.div
         animate={{ x: mouse.x, y: mouse.y }}
         transition={{ type: "spring", stiffness: 50, damping: 30 }}
@@ -85,7 +84,6 @@ export function Hero() {
         <div className="h-125 w-125 rounded-full bg-linear-to-br from-neutral-100 via-neutral-50 to-transparent opacity-80 blur-3xl" />
       </motion.div>
 
-      {/* Left vertical text */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -102,7 +100,6 @@ export function Hero() {
         </span>
       </motion.div>
 
-      {/* Right vertical text */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -119,12 +116,10 @@ export function Hero() {
         </div>
       </motion.div>
 
-      {/* Main content */}
       <motion.div
         style={{ y: contentY, opacity: contentOpacity }}
         className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-6 pt-24 lg:px-12 lg:pt-0"
       >
-        {/* Top line with label */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -145,7 +140,6 @@ export function Hero() {
           <span className="font-mono text-xs text-neutral-300">EST. 2024</span>
         </motion.div>
 
-        {/* Main heading */}
         <div className="mb-8 lg:mb-10">
           <motion.h1
             initial={{ opacity: 0, y: 60 }}
@@ -160,7 +154,6 @@ export function Hero() {
           </motion.h1>
         </div>
 
-        {/* Marquee ticker */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -184,14 +177,12 @@ export function Hero() {
           </motion.div>
         </motion.div>
 
-        {/* Bottom row: subtitle left, CTA right */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col items-start justify-between gap-6 pb-12 sm:flex-row sm:items-end sm:gap-8 sm:pb-16 lg:pb-24"
         >
-          {/* Subtitle */}
           <div className="max-w-md">
             <LocaleTransition>
               <p className="text-base leading-relaxed text-neutral-400 lg:text-lg">
@@ -202,7 +193,6 @@ export function Hero() {
             </LocaleTransition>
           </div>
 
-          {/* CTA */}
           <div className="flex shrink-0 items-center gap-5">
             <a
               href="#work"
@@ -226,7 +216,6 @@ export function Hero() {
         </motion.div>
       </motion.div>
 
-      {/* Bottom scroll line */}
       <motion.div
         style={{ width: lineWidth }}
         className="absolute bottom-0 left-0 h-px bg-neutral-200"

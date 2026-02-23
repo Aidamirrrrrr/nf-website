@@ -6,7 +6,7 @@ import { ArrowUpRight } from "lucide-react";
 import { useI18n } from "@/lib/i18n";
 import { LocaleTransition } from "@/components/locale-transition";
 
-/* ─── Inline SVG illustrations for each service ─── */
+/** Секция услуг — интерактивные карточки с SVG-иллюстрациями. */
 
 function IllustrationWebApp({ hovered }: { hovered: boolean }) {
   const fg = hovered ? "#fff" : "#000";
@@ -14,7 +14,6 @@ function IllustrationWebApp({ hovered }: { hovered: boolean }) {
   const accent = hovered ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.5)";
   return (
     <svg viewBox="0 0 280 160" fill="none" className="h-full w-full">
-      {/* Browser window */}
       <rect x="20" y="12" width="240" height="136" rx="8" fill={muted} />
       <rect
         x="20"
@@ -34,7 +33,6 @@ function IllustrationWebApp({ hovered }: { hovered: boolean }) {
       <circle cx="34" cy="24" r="3" fill={fg} opacity={0.2} />
       <circle cx="44" cy="24" r="3" fill={fg} opacity={0.2} />
       <circle cx="54" cy="24" r="3" fill={fg} opacity={0.2} />
-      {/* Sidebar */}
       <rect
         x="26"
         y="40"
@@ -87,7 +85,6 @@ function IllustrationWebApp({ hovered }: { hovered: boolean }) {
         fill={fg}
         opacity="0.1"
       />
-      {/* Content area */}
       <rect
         x="84"
         y="46"
@@ -124,7 +121,6 @@ function IllustrationWebApp({ hovered }: { hovered: boolean }) {
         fill={accent}
         opacity="0.08"
       />
-      {/* Chart */}
       <rect
         x="84"
         y="106"
@@ -151,9 +147,7 @@ function IllustrationLanding({ hovered }: { hovered: boolean }) {
   const accent = hovered ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.5)";
   return (
     <svg viewBox="0 0 280 160" fill="none" className="h-full w-full">
-      {/* Page frame */}
       <rect x="50" y="8" width="180" height="144" rx="8" fill={muted} />
-      {/* Nav */}
       <rect
         x="60"
         y="18"
@@ -199,7 +193,6 @@ function IllustrationLanding({ hovered }: { hovered: boolean }) {
         fill={accent}
         opacity="0.7"
       />
-      {/* Hero section */}
       <rect
         x="70"
         y="38"
@@ -227,7 +220,6 @@ function IllustrationLanding({ hovered }: { hovered: boolean }) {
         fill={accent}
         opacity="0.6"
       />
-      {/* Feature blocks */}
       <rect
         x="62"
         y="84"
@@ -282,7 +274,6 @@ function IllustrationLanding({ hovered }: { hovered: boolean }) {
         fill={fg}
         opacity="0.08"
       />
-      {/* Footer */}
       <rect
         x="62"
         y="124"
@@ -300,7 +291,6 @@ function IllustrationLanding({ hovered }: { hovered: boolean }) {
         fill={fg}
         opacity="0.06"
       />
-      {/* SEO badge floating */}
       <rect
         x="14"
         y="50"
@@ -320,7 +310,6 @@ function IllustrationLanding({ hovered }: { hovered: boolean }) {
       >
         SEO
       </text>
-      {/* Speed badge */}
       <rect
         x="230"
         y="30"
@@ -350,7 +339,6 @@ function IllustrationTMA({ hovered }: { hovered: boolean }) {
   const accent = hovered ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.5)";
   return (
     <svg viewBox="0 0 280 160" fill="none" className="h-full w-full">
-      {/* Phone frame */}
       <rect x="100" y="6" width="80" height="148" rx="12" fill={muted} />
       <rect
         x="104"
@@ -360,7 +348,6 @@ function IllustrationTMA({ hovered }: { hovered: boolean }) {
         rx="9"
         fill={hovered ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.02)"}
       />
-      {/* Notch */}
       <rect
         x="125"
         y="14"
@@ -370,7 +357,6 @@ function IllustrationTMA({ hovered }: { hovered: boolean }) {
         fill={fg}
         opacity="0.08"
       />
-      {/* TG header */}
       <rect
         x="110"
         y="26"
@@ -390,7 +376,6 @@ function IllustrationTMA({ hovered }: { hovered: boolean }) {
       >
         TMA
       </text>
-      {/* App content - list items */}
       <rect
         x="110"
         y="46"
@@ -472,7 +457,6 @@ function IllustrationTMA({ hovered }: { hovered: boolean }) {
         fill={fg}
         opacity="0.06"
       />
-      {/* Button */}
       <rect
         x="112"
         y="110"
@@ -491,7 +475,6 @@ function IllustrationTMA({ hovered }: { hovered: boolean }) {
         fill={hovered ? "#000" : "#fff"}
         opacity="0.9"
       />
-      {/* Bottom bar */}
       <rect
         x="120"
         y="132"
@@ -501,7 +484,6 @@ function IllustrationTMA({ hovered }: { hovered: boolean }) {
         fill={fg}
         opacity="0.08"
       />
-      {/* Floating bot icon left */}
       <circle cx="48" cy="60" r="20" fill={muted} />
       <circle cx="48" cy="56" r="6" fill={accent} opacity="0.3" />
       <rect
@@ -520,7 +502,6 @@ function IllustrationTMA({ hovered }: { hovered: boolean }) {
         strokeLinecap="round"
         opacity="0.3"
       />
-      {/* Floating chat bubbles right */}
       <rect
         x="202"
         y="40"
@@ -567,7 +548,6 @@ function IllustrationTMA({ hovered }: { hovered: boolean }) {
         fill={fg}
         opacity="0.06"
       />
-      {/* Telegram plane icon */}
       <path
         d="M224 110 L248 98 L228 120 L230 110 Z"
         fill={accent}
@@ -583,7 +563,6 @@ function IllustrationAPI({ hovered }: { hovered: boolean }) {
   const accent = hovered ? "rgba(255,255,255,0.7)" : "rgba(0,0,0,0.5)";
   return (
     <svg viewBox="0 0 280 160" fill="none" className="h-full w-full">
-      {/* Central node */}
       <circle cx="140" cy="80" r="22" fill={muted} />
       <circle cx="140" cy="80" r="14" fill={accent} opacity="0.15" />
       <text
@@ -596,8 +575,6 @@ function IllustrationAPI({ hovered }: { hovered: boolean }) {
       >
         API
       </text>
-      {/* Connected nodes */}
-      {/* Top left - YooKassa */}
       <line
         x1="124"
         y1="62"
@@ -626,7 +603,6 @@ function IllustrationAPI({ hovered }: { hovered: boolean }) {
         fill={fg}
         opacity="0.08"
       />
-      {/* Top right - iiko */}
       <line
         x1="156"
         y1="62"
@@ -655,7 +631,6 @@ function IllustrationAPI({ hovered }: { hovered: boolean }) {
         fill={fg}
         opacity="0.08"
       />
-      {/* Bottom left - OpenAI */}
       <line
         x1="124"
         y1="98"
@@ -684,7 +659,6 @@ function IllustrationAPI({ hovered }: { hovered: boolean }) {
         fill={fg}
         opacity="0.08"
       />
-      {/* Bottom right - S3 */}
       <line
         x1="156"
         y1="98"
@@ -713,7 +687,6 @@ function IllustrationAPI({ hovered }: { hovered: boolean }) {
         fill={fg}
         opacity="0.08"
       />
-      {/* Left - NestJS */}
       <line
         x1="118"
         y1="80"
@@ -733,7 +706,6 @@ function IllustrationAPI({ hovered }: { hovered: boolean }) {
         fill={accent}
         opacity="0.3"
       />
-      {/* Right - DB */}
       <line
         x1="162"
         y1="80"
@@ -762,7 +734,6 @@ function IllustrationAPI({ hovered }: { hovered: boolean }) {
         fill={accent}
         opacity="0.15"
       />
-      {/* Pulse rings */}
       <circle
         cx="140"
         cy="80"
@@ -826,7 +797,6 @@ export function Services() {
       className="relative z-10 overflow-hidden bg-neutral-50 py-20 sm:py-32 lg:py-48"
     >
       <div className="relative mx-auto max-w-6xl px-6 lg:px-12">
-        {/* Header */}
         <div className="mb-20 grid gap-8 md:mb-24 md:grid-cols-2 md:items-end">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -867,7 +837,6 @@ export function Services() {
           </motion.div>
         </div>
 
-        {/* Services grid — 2×2 cards */}
         <div className="grid gap-4 sm:grid-cols-2 lg:gap-5">
           {services.map((service, i) => {
             const isHovered = hoveredIndex === i;
@@ -886,7 +855,6 @@ export function Services() {
                 onMouseLeave={() => setHoveredIndex(null)}
                 className="group relative overflow-hidden rounded-2xl border border-neutral-200 bg-white p-6 sm:p-8 lg:p-10"
               >
-                {/* Hover bg */}
                 <motion.div
                   className="absolute inset-0 bg-black"
                   initial={false}
@@ -894,9 +862,7 @@ export function Services() {
                   transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
                 />
 
-                {/* Card content */}
                 <div className="relative z-10 flex h-full flex-col lg:min-h-80">
-                  {/* Top: number */}
                   <div className="mb-4 flex items-start justify-between">
                     <motion.span
                       animate={{ color: isHovered ? "#737373" : "#d4d4d4" }}
@@ -907,7 +873,6 @@ export function Services() {
                     </motion.span>
                   </div>
 
-                  {/* Illustration */}
                   <motion.div
                     className="mb-6 h-36 w-full lg:h-40"
                     animate={{
@@ -919,7 +884,6 @@ export function Services() {
                     <Illustration hovered={isHovered} />
                   </motion.div>
 
-                  {/* Bottom: title + description */}
                   <div className="mt-auto">
                     <LocaleTransition>
                       <h3
@@ -940,7 +904,6 @@ export function Services() {
                   </div>
                 </div>
 
-                {/* Corner arrow on hover */}
                 <motion.div
                   className="absolute bottom-8 right-8 lg:bottom-10 lg:right-10"
                   initial={false}

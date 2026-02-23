@@ -1,36 +1,83 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# NotFound Studio — Website
 
-## Getting Started
+Сайт-портфолио студии веб-разработки **NotFound Studio**.
 
-First, run the development server:
+**Стек:** Next.js 16, React 19, TypeScript, Tailwind CSS v4, Framer Motion, Three.js
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+**Демо:** [not-found.tech](https://not-found.tech)
+
+---
+
+## Возможности
+
+- Серверный рендеринг и статическая генерация (App Router)
+- Интернационализация EN / RU (cookie + определение через `Accept-Language`)
+- Контактная форма с отправкой через SMTP (Nodemailer)
+- Плавный скролл (Lenis), параллакс, анимации секций (Framer Motion)
+- Интерактивная 3D-сцена в hero (React Three Fiber)
+- Кастомный курсор, адаптив, тёмная / светлая секционная навигация
+- SEO: метаданные, JSON-LD, sitemap.xml, robots.txt
+- Docker-образ (multi-stage, standalone output)
+
+## Структура
+
+```
+src/
+├── app/
+│   ├── api/contact/    — API-роут отправки формы
+│   ├── globals.css     — глобальные стили
+│   ├── layout.tsx      — корневой лейаут, мета, JSON-LD
+│   ├── page.tsx        — главная страница
+│   ├── robots.ts       — генерация robots.txt
+│   └── sitemap.ts      — генерация sitemap.xml
+├── components/
+│   ├── sections/       — секции лендинга (hero, about, services, …)
+│   ├── three/          — 3D-сцена (React Three Fiber)
+│   ├── ui/             — UI-примитивы (button, separator)
+│   ├── custom-cursor   — кастомный курсор
+│   ├── locale-transition — анимация смены языка
+│   ├── logo            — логотип NF Studio
+│   └── smooth-scroll   — обёртка Lenis
+├── lib/
+│   ├── i18n.tsx        — провайдер i18n, словари EN/RU
+│   └── utils.ts        — утилита cn (clsx + tailwind-merge)
+└── proxy.ts            — Next.js proxy (определение локали)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Быстрый старт
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm install
+cp .env.example .env.local   # заполнить SMTP-данные
+pnpm dev                     # http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Переменные окружения
 
-## Learn More
+| Переменная  | Описание          | Пример                 |
+| ----------- | ----------------- | ---------------------- |
+| `SMTP_HOST` | SMTP-сервер       | `smtp.timeweb.ru`      |
+| `SMTP_PORT` | Порт (SSL)        | `465`                  |
+| `SMTP_USER` | Email отправителя | `hello@not-found.tech` |
+| `SMTP_PASS` | Пароль почты      | —                      |
 
-To learn more about Next.js, take a look at the following resources:
+## Скрипты
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Команда       | Описание                  |
+| ------------- | ------------------------- |
+| `pnpm dev`    | Dev-сервер (Turbopack)    |
+| `pnpm build`  | Продакшен-сборка          |
+| `pnpm start`  | Запуск standalone-сервера |
+| `pnpm lint`   | Проверка (Biome)          |
+| `pnpm format` | Форматирование (Biome)    |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Docker
 
-## Deploy on Vercel
+```bash
+docker build -t nf-website .
+docker run -p 3000:3000 --env-file .env.local nf-website
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Лицензия
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Проприетарный. © NotFound Studio, 2024–2026.

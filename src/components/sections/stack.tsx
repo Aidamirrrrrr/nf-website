@@ -5,7 +5,7 @@ import { useRef } from "react";
 import { useI18n } from "@/lib/i18n";
 import { LocaleTransition } from "@/components/locale-transition";
 
-/* ─── Tech data ─── */
+/** Данные технологического стека. */
 type TechItem = {
   name: string;
   detail: string;
@@ -240,7 +240,7 @@ const techCategories = [
   },
 ];
 
-/* ─── Infinite marquee row ─── */
+/** Бесконечная марки-строка. */
 function MarqueeRow({
   items,
   label,
@@ -255,7 +255,6 @@ function MarqueeRow({
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-5%" });
 
-  // Duplicate items for seamless loop
   const duplicated = [...items, ...items];
 
   const animationName = direction === "left" ? "marquee-left" : "marquee-right";
@@ -273,7 +272,6 @@ function MarqueeRow({
       }}
       className="group/row relative"
     >
-      {/* Category label */}
       <div className="mb-3 flex items-center gap-3 px-6 lg:px-12">
         <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-neutral-300 font-mono text-[9px] font-bold text-neutral-400">
           {String(index + 1).padStart(2, "0")}
@@ -285,9 +283,7 @@ function MarqueeRow({
         </LocaleTransition>
       </div>
 
-      {/* Marquee container */}
       <div className="relative overflow-hidden">
-        {/* Edge fades */}
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-linear-to-r from-neutral-50 to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-linear-to-l from-neutral-50 to-transparent" />
 
@@ -306,7 +302,7 @@ function MarqueeRow({
   );
 }
 
-/* ─── Single tech card ─── */
+/** Карточка технологии. */
 function TechCard({ item }: { item: TechItem }) {
   return (
     <a
@@ -319,7 +315,6 @@ function TechCard({ item }: { item: TechItem }) {
           : "border-neutral-200 bg-white hover:border-neutral-300 hover:bg-neutral-100"
       }`}
     >
-      {/* Glow effect for featured */}
       {item.featured && (
         <div className="absolute -inset-px rounded-xl bg-linear-to-r from-black/5 via-transparent to-black/5 opacity-0 transition-opacity duration-500 group-hover/card:opacity-100" />
       )}
@@ -344,7 +339,6 @@ function TechCard({ item }: { item: TechItem }) {
         {item.detail}
       </span>
 
-      {/* Arrow */}
       <svg
         width="10"
         height="10"
@@ -366,7 +360,7 @@ function TechCard({ item }: { item: TechItem }) {
   );
 }
 
-/* ─── Main section ─── */
+/** Секция технологического стека. */
 export function Stack() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
@@ -379,7 +373,6 @@ export function Stack() {
     infra: t.stack.infra,
   };
 
-  // Parallax for the big background number
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
@@ -391,7 +384,6 @@ export function Stack() {
       ref={sectionRef}
       className="relative z-10 overflow-hidden bg-neutral-50 py-20 sm:py-32 lg:py-48"
     >
-      {/* Big background decorative number */}
       <motion.div
         style={{ y: bgY }}
         className="pointer-events-none absolute right-0 top-0 select-none font-mono text-[30vw] font-black leading-none text-black/3"
@@ -399,7 +391,6 @@ export function Stack() {
         40+
       </motion.div>
 
-      {/* Dot grid background */}
       <div
         className="pointer-events-none absolute inset-0 opacity-30"
         style={{
@@ -410,7 +401,6 @@ export function Stack() {
       />
 
       <div className="relative">
-        {/* Header */}
         <div className="mx-auto max-w-6xl px-6 lg:px-12">
           <div className="mb-20 lg:mb-28 lg:grid lg:grid-cols-12 lg:gap-12">
             <motion.div
@@ -453,7 +443,6 @@ export function Stack() {
           </div>
         </div>
 
-        {/* Marquee rows — full width */}
         <div className="space-y-8">
           {techCategories.map((cat, i) => (
             <MarqueeRow
@@ -466,7 +455,6 @@ export function Stack() {
           ))}
         </div>
 
-        {/* Bottom stats bar */}
         <div className="mx-auto max-w-6xl px-6 lg:px-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

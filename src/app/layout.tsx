@@ -1,3 +1,5 @@
+/** Корневой layout — метаданные, шрифты, JSON-LD и определение локали. */
+
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { cookies } from "next/headers";

@@ -1,5 +1,7 @@
 "use client";
 
+/** Секция процесса работы — горизонтальная прокрутка шагов. */
+
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { useI18n } from "@/lib/i18n";
@@ -12,7 +14,7 @@ const stepsMeta = [
   { number: "04", key: "step4" as const, descKey: "step4desc" as const },
 ];
 
-/* ─── Horizontal scroll step ─── */
+/** Шаг процесса с горизонтальным скроллом. */
 function HorizontalStep({
   number,
   title,
@@ -28,17 +30,13 @@ function HorizontalStep({
 }) {
   return (
     <div className="group relative flex h-80 w-[85vw] shrink-0 flex-col sm:h-105 sm:w-[70vw] lg:h-115 lg:w-[40vw]">
-      {/* Card */}
       <div className="flex flex-1 flex-col justify-between rounded-3xl border border-neutral-800 bg-neutral-900 p-6 transition-all duration-500 hover:border-neutral-600 hover:bg-neutral-800 sm:p-8 lg:p-12">
-        {/* Top */}
         <div>
-          {/* Number + progress indicator */}
           <div className="mb-6 flex items-center justify-between sm:mb-10 lg:mb-14">
             <span className="font-mono text-5xl font-black text-white/6 sm:text-7xl lg:text-8xl">
               {number}
             </span>
 
-            {/* Step dots */}
             <div className="flex items-center gap-2">
               {Array.from({ length: total }).map((_, i) => (
                 <div
@@ -55,14 +53,12 @@ function HorizontalStep({
             </div>
           </div>
 
-          {/* Title */}
           <LocaleTransition>
             <h3 className="mb-5 text-2xl font-bold text-white sm:text-3xl lg:text-4xl">
               {title}
             </h3>
           </LocaleTransition>
 
-          {/* Description */}
           <LocaleTransition>
             <p className="max-w-md text-sm leading-relaxed text-neutral-400 lg:text-base">
               {description}
@@ -70,7 +66,6 @@ function HorizontalStep({
           </LocaleTransition>
         </div>
 
-        {/* Bottom decorative */}
         <div className="mt-6 flex items-center gap-4 sm:mt-10 lg:mt-14">
           <div className="h-px flex-1 bg-neutral-800 transition-colors duration-500 group-hover:bg-neutral-700" />
           <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-neutral-600">
@@ -97,7 +92,7 @@ function HorizontalStep({
   );
 }
 
-/* ─── Main section ─── */
+/** Секция процесса работы. */
 export function Process() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -106,20 +101,17 @@ export function Process() {
 
   const { t } = useI18n();
 
-  // Horizontal scroll driven by vertical scroll
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end end"],
   });
 
-  // First 20% of scroll = no movement (delay), then cards scroll
   const x = useTransform(
     scrollYProgress,
     [0, 0.15, 0.95, 1],
     ["2%", "2%", "-65%", "-65%"],
   );
 
-  // Progress line
   const progressWidth = useTransform(
     scrollYProgress,
     [0.15, 0.95],
@@ -133,9 +125,7 @@ export function Process() {
       data-nav-theme="dark"
       className="relative z-10 h-[250vh] bg-neutral-950 sm:h-[350vh]"
     >
-      {/* Sticky container */}
       <div className="sticky top-0 flex h-screen flex-col overflow-hidden">
-        {/* Header */}
         <div className="mx-auto w-full max-w-6xl px-6 pt-16 sm:pt-20 lg:px-12 lg:pt-28">
           <div className="mb-8 lg:mb-12 lg:grid lg:grid-cols-12 lg:items-end lg:gap-16">
             <motion.div
@@ -177,7 +167,6 @@ export function Process() {
             </motion.div>
           </div>
 
-          {/* Progress bar */}
           <div className="relative h-px w-full bg-neutral-800">
             <motion.div
               className="absolute inset-y-0 left-0 bg-white"
@@ -186,7 +175,6 @@ export function Process() {
           </div>
         </div>
 
-        {/* Horizontal scrolling cards */}
         <div className="flex flex-1 items-center">
           <motion.div
             ref={scrollContainerRef}
@@ -204,7 +192,6 @@ export function Process() {
               />
             ))}
 
-            {/* End spacer */}
             <div className="w-[20vw] shrink-0" />
           </motion.div>
         </div>

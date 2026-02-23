@@ -1,3 +1,5 @@
+/** API-маршрут отправки письма через SMTP (nodemailer). */
+
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 

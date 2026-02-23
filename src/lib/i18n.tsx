@@ -1,5 +1,7 @@
 "use client";
 
+/** Провайдер интернационализации (EN/RU) с контекстом и словарями. */
+
 import {
   createContext,
   useContext,

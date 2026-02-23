@@ -1,5 +1,7 @@
 "use client";
 
+/** Секция контактов — форма обратной связи и футер. */
+
 import {
   motion,
   useInView,
@@ -21,7 +23,7 @@ const footerLinks = [
   { labelRu: "Работы", labelEn: "Work", href: "#work" },
 ];
 
-/* ── Magnetic link component ── */
+/** Магнитная ссылка с эффектом притяжения к курсору. */
 function MagneticLink({
   children,
   href,
@@ -59,7 +61,7 @@ function MagneticLink({
   );
 }
 
-/* ── Floating input field ── */
+/** Поле ввода с плавающим лейблом. */
 function FloatingField({
   label,
   type = "text",
@@ -125,7 +127,6 @@ function FloatingField({
       >
         {label}
       </span>
-      {/* Animated underline */}
       <motion.span
         className="absolute bottom-0 left-0 h-0.5 bg-white"
         initial={{ scaleX: 0 }}
@@ -133,7 +134,6 @@ function FloatingField({
         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
         style={{ originX: 0 }}
       />
-      {/* Error messages */}
       <AnimatePresence>
         {isEmpty && (
           <motion.span
@@ -160,7 +160,7 @@ function FloatingField({
   );
 }
 
-/* ── Floating textarea field ── */
+/** Поле текста с плавающим лейблом. */
 function FloatingTextarea({
   label,
   required = true,
@@ -236,7 +236,7 @@ function FloatingTextarea({
   );
 }
 
-/* ── Contact form ── */
+/** Форма обратной связи с отправкой через API. */
 function ContactForm({ isInView, isRu }: { isInView: boolean; isRu: boolean }) {
   const [formData, setFormData] = useState({
     name: "",
@@ -249,7 +249,6 @@ function ContactForm({ isInView, isRu }: { isInView: boolean; isRu: boolean }) {
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    // Basic validation
     if (
       !formData.name.trim() ||
       !formData.email.trim() ||
@@ -399,7 +398,6 @@ export function Contact() {
       data-nav-theme="dark"
       className="relative z-10 overflow-hidden bg-neutral-950 py-20 sm:py-32 lg:py-48"
     >
-      {/* Background decorative */}
       <motion.div
         style={{ y: bgY }}
         className="pointer-events-none absolute -right-10 top-1/2 -translate-y-1/2 select-none"
@@ -410,7 +408,6 @@ export function Contact() {
       </motion.div>
 
       <div className="relative mx-auto max-w-6xl px-6 lg:px-12">
-        {/* Header */}
         <div className="mb-20 grid gap-8 md:mb-24 md:grid-cols-2 md:items-end">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -445,11 +442,8 @@ export function Contact() {
           </motion.div>
         </div>
 
-        {/* Form section */}
         <div className="mx-auto max-w-3xl">
-          {/* Email — big magnetic link */}
           <div className="lg:col-span-full">
-            {/* Email — big magnetic link */}
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -476,7 +470,6 @@ export function Contact() {
               </MagneticLink>
             </motion.div>
 
-            {/* Contact form */}
             <ContactForm isInView={isInView} isRu={isRu} />
           </div>
         </div>
@@ -494,7 +487,6 @@ export function Footer() {
     <footer className="relative z-10 border-t border-neutral-800 bg-neutral-950 py-8">
       <div className="mx-auto max-w-6xl px-6 lg:px-12">
         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row sm:gap-4">
-          {/* Left: logo + copyright */}
           <div className="flex items-center gap-4">
             <a href="#" className="inline-flex">
               <Logo variant="dark" size="small" />
@@ -509,7 +501,6 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Right: nav links */}
           <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2">
             {footerLinks.map((link) => (
               <a

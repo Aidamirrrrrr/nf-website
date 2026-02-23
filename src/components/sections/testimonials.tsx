@@ -1,5 +1,7 @@
 "use client";
 
+/** Секция отзывов с автоматической ротацией и прогресс-баром. */
+
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef, useState, useCallback, useEffect } from "react";
 import { useI18n } from "@/lib/i18n";
@@ -54,13 +56,11 @@ export function Testimonials() {
     setActive((p) => (p + 1) % testimonials.length);
   }, [testimonials.length]);
 
-  // Auto-advance — resets on manual click via `active` dependency
   useEffect(() => {
     const timer = setInterval(next, 7000);
     return () => clearInterval(timer);
   }, [next, active]);
 
-  // Parallax watermark
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
@@ -73,7 +73,6 @@ export function Testimonials() {
       data-nav-theme="dark"
       className="relative z-10 overflow-hidden bg-neutral-950 py-20 sm:py-32 lg:py-48"
     >
-      {/* Background watermark */}
       <motion.div
         style={{ y: bgY }}
         className="pointer-events-none absolute -right-10 top-1/2 -translate-y-1/2 select-none"
@@ -84,7 +83,6 @@ export function Testimonials() {
       </motion.div>
 
       <div className="relative mx-auto max-w-6xl px-6 lg:px-12">
-        {/* Header */}
         <motion.div
           ref={headerRef}
           initial={{ opacity: 0, y: 40 }}
@@ -106,9 +104,7 @@ export function Testimonials() {
           </LocaleTransition>
         </motion.div>
 
-        {/* Two-column layout: big quote left, selector right */}
         <div className="grid items-start gap-12 lg:grid-cols-5 lg:gap-20">
-          {/* Left: large quote — all rendered, tallest sets height */}
           <div className="relative lg:col-span-3">
             {testimonials.map((item, i) => (
               <div
@@ -141,7 +137,6 @@ export function Testimonials() {
             ))}
           </div>
 
-          {/* Right: selector list */}
           <div className="lg:col-span-2">
             <div className="flex flex-col gap-0">
               {testimonials.map((item, i) => {
@@ -155,7 +150,6 @@ export function Testimonials() {
                       isActive ? "opacity-100" : "opacity-40 hover:opacity-70"
                     }`}
                   >
-                    {/* Progress bar for active */}
                     <div className="relative h-10 w-1 shrink-0 overflow-hidden rounded-full bg-neutral-800">
                       {isActive && (
                         <motion.div
@@ -179,7 +173,6 @@ export function Testimonials() {
                       </LocaleTransition>
                     </div>
 
-                    {/* Stars */}
                     <div className="ml-auto flex shrink-0 gap-0.5">
                       {Array.from({ length: 5 }).map((_, j) => (
                         <span key={j} className="text-[10px] text-white">
@@ -192,7 +185,6 @@ export function Testimonials() {
               })}
             </div>
 
-            {/* Counter */}
             <div className="mt-6 font-mono text-xs text-neutral-400">
               {String(active + 1).padStart(2, "0")} /{" "}
               {String(testimonials.length).padStart(2, "0")}

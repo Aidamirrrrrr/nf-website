@@ -1,5 +1,7 @@
 "use client";
 
+/** Секция FAQ — аккордеон с анимацией раскрытия. */
+
 import {
   motion,
   useInView,
@@ -17,7 +19,7 @@ interface FaqItem {
   answer: string;
 }
 
-/* ── Single FAQ row — underline + rotate number ── */
+/** Строка аккордеона FAQ. */
 function FaqRow({
   item,
   index,
@@ -47,7 +49,6 @@ function FaqRow({
         onClick={onToggle}
         className="flex w-full items-center gap-6 py-7 text-left sm:gap-8 sm:py-9 lg:gap-10"
       >
-        {/* Number — rotates on open */}
         <motion.span
           animate={{ rotate: isOpen ? 90 : 0 }}
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -58,7 +59,6 @@ function FaqRow({
           {String(index + 1).padStart(2, "0")}
         </motion.span>
 
-        {/* Question */}
         <LocaleTransition>
           <span
             className={`min-w-0 flex-1 text-lg font-semibold transition-colors duration-400 sm:text-xl lg:text-2xl ${
@@ -69,7 +69,6 @@ function FaqRow({
           </span>
         </LocaleTransition>
 
-        {/* Arrow that flips */}
         <motion.span
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
@@ -93,7 +92,6 @@ function FaqRow({
         </motion.span>
       </button>
 
-      {/* Answer */}
       <AnimatePresence initial={false}>
         {isOpen && (
           <motion.div
@@ -143,7 +141,6 @@ export function Faq() {
       data-nav-theme="dark"
       className="relative z-10 overflow-hidden bg-neutral-950 py-20 sm:py-32 lg:py-48"
     >
-      {/* Background watermark */}
       <motion.div
         style={{ y: bgY }}
         className="pointer-events-none absolute -right-10 top-1/2 -translate-y-1/2 select-none"
@@ -154,7 +151,6 @@ export function Faq() {
       </motion.div>
 
       <div className="relative mx-auto max-w-6xl px-6 lg:px-12">
-        {/* Header */}
         <div className="mb-20 grid gap-8 md:mb-24 md:grid-cols-2 md:items-end">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -193,7 +189,6 @@ export function Faq() {
           </motion.div>
         </div>
 
-        {/* FAQ list — clean accordion */}
         <div>
           {faqItems.map((item, i) => (
             <FaqRow

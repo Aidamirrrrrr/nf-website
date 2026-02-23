@@ -1,5 +1,7 @@
 "use client";
 
+/** CTA-баннер с призывом к действию. */
+
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { ArrowRight } from "lucide-react";
@@ -28,7 +30,6 @@ export function CtaBanner() {
       ref={sectionRef}
       className="relative z-10 overflow-hidden bg-neutral-50 py-20 sm:py-32 lg:py-48"
     >
-      {/* Background watermark */}
       <motion.div
         style={{ y: bgY }}
         className="pointer-events-none absolute -right-10 top-1/2 -translate-y-1/2 select-none"
@@ -39,7 +40,6 @@ export function CtaBanner() {
       </motion.div>
 
       <div className="relative mx-auto max-w-6xl px-6 lg:px-12">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
@@ -60,9 +60,7 @@ export function CtaBanner() {
           </LocaleTransition>
         </motion.div>
 
-        {/* Two-column: text + stats */}
         <div className="grid items-start gap-16 lg:grid-cols-2 lg:gap-20">
-          {/* Left: description + CTA */}
           <div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -90,7 +88,6 @@ export function CtaBanner() {
             </motion.div>
           </div>
 
-          {/* Right: stats */}
           <div className="flex flex-col gap-0">
             {stats.map((stat, i) => (
               <motion.div

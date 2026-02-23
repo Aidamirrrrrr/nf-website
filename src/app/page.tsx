@@ -1,3 +1,5 @@
+/** Главная страница — композиция всех секций портфолио. */
+
 import { SmoothScroll } from "@/components/smooth-scroll";
 import { Navigation } from "@/components/sections/navigation";
 import { Hero } from "@/components/sections/hero";
